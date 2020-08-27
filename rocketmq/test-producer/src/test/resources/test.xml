@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="spring"></context:component-scan>
+    <!-- 数据源 -->
+    <bean id="ds" class="com.mysql.cj.jdbc.MysqlDataSource">
+<!--        <property name="driverClassName" value="${jdbc.driver}"/>-->
+        <property name="url" value="jdbc:mysql://localhost:3306/test?serverTimezone=GMT"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    <!-- 管理实务的Bean -->
+    <bean id="tm"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="ds"/>
+    </bean>
+    <!-- 开启实务的注解 -->
+    <tx:annotation-driven  transaction-manager="tm"/>
+    <!-- 配置SQLSessionFactoryBean -->
+    <bean id="sf" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="ds"/>
+        <property name="configLocation" value="classpath:spring_mybatis_config.xml" />
+    </bean>
+    <!-- 开启mapper扫描 -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="mybatis/model/**"/>
+        <!-- 增加扫描过滤，还可以使用 makeInterfaces 来过滤 -->
+<!--        <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"/>-->
+    </bean>
+
+</beans>

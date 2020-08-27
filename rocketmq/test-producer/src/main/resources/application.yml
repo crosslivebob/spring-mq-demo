@@ -1,0 +1,30 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    #    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=GMT
+    username: root
+    password: root
+    hikari:
+      max-lifetime: 28830000 # 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考MySQL wait_timeout参数（show variables like '%timeout%';）
+      maximum-pool-size: 9 # 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
+  redis:
+    host: 192.168.91.101
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 6
+        max-active: 32
+        max-wait: 100
+        min-idle: 4
+logging:
+  level:
+    org.demo.mq: debug
+mybatis:
+  configuration:
+    local-cache-scope: statement
+#    cache-enabled: false # 默认是开启二级缓存的，不过需要使用@CacheNamespace去标记那个mapper需要使用这个二级缓存
+#  mapper-locations: classpath:*.xml
+test:
+  phone: 13363603667
