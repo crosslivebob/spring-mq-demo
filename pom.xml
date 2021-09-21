@@ -33,6 +33,7 @@
         <demo.latest.version>1.0.0-SNAPSHOT</demo.latest.version>
         <aspectjweaver.version>1.9.5</aspectjweaver.version>
         <jedis.version>2.9.0</jedis.version>
+        <ck.jdbc.version>0.3.1</ck.jdbc.version>
     </properties>
 
     <dependencyManagement>
@@ -84,6 +85,12 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+            <!-- ck -->
+            <dependency>
+                <groupId>ru.yandex.clickhouse</groupId>
+                <artifactId>clickhouse-jdbc</artifactId>
+                <version>${ck.jdbc.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

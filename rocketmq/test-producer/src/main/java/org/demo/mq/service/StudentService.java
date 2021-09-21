@@ -39,4 +39,18 @@ public class StudentService {
 //        }
         return studentMapper.queryStudent();
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void testUpdate() throws Exception {
+//        try {
+        try {
+            studentMapper.insertStudent(20180101L, "test", "test");
+        }catch (Exception e){
+            throw  new Exception("dfdf");
+        }
+//            studentMapper.updateStudent("testUpdate", 111L);
+//        } catch (Exception e) {
+//            System.out.println("测试");
+//        }
+    }
 }

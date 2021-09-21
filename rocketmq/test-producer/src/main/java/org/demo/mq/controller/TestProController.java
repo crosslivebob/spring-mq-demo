@@ -5,12 +5,14 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.demo.mq.mapper.StudentMapper;
 import org.demo.mq.pojo.Student;
 import org.demo.mq.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,9 @@ public class TestProController {
 
     @Autowired
     HttpServletRequest request;
+
+    @Autowired
+    private StudentMapper studentMapper;
 
     @PostMapping("sync/{mq}")
     public ResponseEntity<String> producer(@PathVariable("mq") String mq) {
@@ -67,5 +72,29 @@ public class TestProController {
     @GetMapping("str")
     public String str(@RequestParam("test") String test) {
         return test + "-222";
+    }
+
+
+    @GetMapping("/insertstu")
+    @Transactional(rollbackFor = Exception.class)
+    public void testInsert() {
+        studentMapper.insertStudent(444L, "test", "test");
+        try {
+            studentService.testUpdate();
+        } catch (Exception e) {
+            System.out.println("测试");
+        }
+//        throw new RuntimeException("33");
+    }
+
+    //    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
+    public void testUpdate() {
+//        try {
+            studentMapper.insertStudent(20180101L, "test", "test");
+//            studentMapper.updateStudent("testUpdate", 111L);
+//        } catch (Exception e) {
+//            System.out.println("测试");
+//        }
     }
 }
